@@ -31,15 +31,27 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         mFeedFragment = (FeedFragment) getFragmentManager().findFragmentById(R.id.feed_container);
-        if (mFeedFragment == null){
+        if (mFeedFragment == null) {
             mFeedFragment = new FeedFragment();
 
             getFragmentManager().beginTransaction()
-                    .add(R.id.feed_container , mFeedFragment)
+                    .add(R.id.feed_container, mFeedFragment)
                     .commit();
         }
     }
+
+    public void onClick(View v){
+        Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+        mPhoto = new File(directory, "sample.jpeg");
+        i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mPhoto));
+        startActivityForResult(i, CAMERA_REQUEST);
+
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
