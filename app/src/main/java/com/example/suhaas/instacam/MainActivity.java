@@ -1,5 +1,6 @@
 package com.example.suhaas.instacam;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ShareActionProvider;
@@ -29,15 +31,20 @@ public class MainActivity extends AppCompatActivity implements MaterialTabListen
     private static final String TAG = "MainActivity";
     private File mPhoto;
     private FeedFragment mFeedFragment;
+    private MaterialTabHost mTabBar;
+    private ProfileFragment mProfileFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
-        MaterialTabHost tabBar = (MaterialTabHost)findViewById(R.id.tab_bar);
-        tabBar.addTab(tabBar.newTab().setText("HOME").setTabListener(this));
-        tabBar.addTab(tabBar.newTab().setText("PROFILE").setTabListener(this));
+
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        mTabBar = (MaterialTabHost)findViewById(R.id.tab_bar);
+        mTabBar.addTab(mTabBar.newTab().setIcon(getResources().getDrawable(R.drawable.ic_home)).setTabListener(this));
+        mTabBar.addTab(mTabBar.newTab().setIcon(getResources().getDrawable(R.drawable.ic_profile)).setTabListener(this));
 
         mFeedFragment = (FeedFragment) getFragmentManager().findFragmentById(R.id.feed_container);
         if (mFeedFragment == null) {
@@ -51,7 +58,25 @@ public class MainActivity extends AppCompatActivity implements MaterialTabListen
 
     @Override
     public void onTabSelected(MaterialTab tab) {
+        int position = tab.getPosition();
+        mTabBar.setSelectedNavigationItem(position);
 
+        Fragment fragment = null;
+        switch (position){
+            case 0:
+                fragment = mFeedFragment;
+                break;
+            case 1:
+                if (mProfileFragment == null){
+                    mProfileFragment = new ProfileFragment();
+                }
+                fragment = mProfileFragment;
+                break;
+        }
+
+        getFragmentManager().beginTransaction().
+                replace(R.id.feed_container, fragment).
+                commit();
     }
 
     @Override
