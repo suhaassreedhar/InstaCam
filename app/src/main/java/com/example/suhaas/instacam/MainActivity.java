@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import java.io.File;
 
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements MaterialTabListen
 
     private static final int CAMERA_REQUEST = 10;
     private static final String TAG = "MainActivity";
-    private File mPhoto;
+    private Photo mPhoto;
     private FeedFragment mFeedFragment;
     private MaterialTabHost mTabBar;
     private ProfileFragment mProfileFragment;
@@ -38,6 +39,19 @@ public class MainActivity extends AppCompatActivity implements MaterialTabListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ImageButton cameraFAB = (ImageButton)findViewById(R.id.camera_fab);
+        cameraFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+                mPhoto = new Photo();
+
+                i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mPhoto.getFile()));
+                startActivityForResult(i, CAMERA_REQUEST);
+            }
+        });
 
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -89,25 +103,13 @@ public class MainActivity extends AppCompatActivity implements MaterialTabListen
 
     }
 
-    public void onClick(View v){
-        Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-        File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
-        mPhoto = new File(directory, "sample.jpeg");
-        i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mPhoto));
-        startActivityForResult(i, CAMERA_REQUEST);
-
-    }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAMERA_REQUEST){
             if (resultCode == RESULT_OK){
-                Log.d(TAG, "We took a picture");
-
                 Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setDataAndType(Uri.fromFile(mPhoto), "image/jpeg");
+                i.setDataAndType(Uri.fromFile(mPhoto.getFile()), "image/jpeg");
                 startActivity(i);
             }
         }
