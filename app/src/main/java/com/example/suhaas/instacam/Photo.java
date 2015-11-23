@@ -3,11 +3,13 @@ package com.example.suhaas.instacam;
 import android.os.Environment;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.UUID;
 
-public class Photo {
+public class Photo implements Serializable{
     private static final File sDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
     private UUID mId;
+    private String mCaption;
 
     Photo(){
         mId = UUID.randomUUID();
@@ -15,6 +17,14 @@ public class Photo {
 
     public UUID getId() {
         return mId;
+    }
+
+    public String getCaption() {
+        return mCaption;
+    }
+
+    public void setCaption(String caption) {
+        mCaption = caption;
     }
 
     public File getFile(){

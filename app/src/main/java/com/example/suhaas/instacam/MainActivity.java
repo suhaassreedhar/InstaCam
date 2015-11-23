@@ -26,9 +26,9 @@ import it.neokree.materialtabs.MaterialTab;
 import it.neokree.materialtabs.MaterialTabHost;
 import it.neokree.materialtabs.MaterialTabListener;
 
-public class MainActivity extends AppCompatActivity implements MaterialTabListener{
+public class MainActivity extends AppCompatActivity implements MaterialTabListener {
 
-    private static final int CAMERA_REQUEST = 10;
+    private static final int NEW_PHOTO_REQUEST = 10;
     private static final String TAG = "MainActivity";
     private Photo mPhoto;
     private FeedFragment mFeedFragment;
@@ -40,23 +40,19 @@ public class MainActivity extends AppCompatActivity implements MaterialTabListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ImageButton cameraFAB = (ImageButton)findViewById(R.id.camera_fab);
+        ImageButton cameraFAB = (ImageButton) findViewById(R.id.camera_fab);
         cameraFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-                mPhoto = new Photo();
-
-                i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mPhoto.getFile()));
-                startActivityForResult(i, CAMERA_REQUEST);
+                Intent i = new Intent(MainActivity.this, NewPhotoActivity.class);
+                startActivityForResult(i, NEW_PHOTO_REQUEST);
             }
         });
 
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mTabBar = (MaterialTabHost)findViewById(R.id.tab_bar);
+        mTabBar = (MaterialTabHost) findViewById(R.id.tab_bar);
         mTabBar.addTab(mTabBar.newTab().setIcon(getResources().getDrawable(R.drawable.ic_home)).setTabListener(this));
         mTabBar.addTab(mTabBar.newTab().setIcon(getResources().getDrawable(R.drawable.ic_profile)).setTabListener(this));
 
@@ -76,12 +72,12 @@ public class MainActivity extends AppCompatActivity implements MaterialTabListen
         mTabBar.setSelectedNavigationItem(position);
 
         Fragment fragment = null;
-        switch (position){
+        switch (position) {
             case 0:
                 fragment = mFeedFragment;
                 break;
             case 1:
-                if (mProfileFragment == null){
+                if (mProfileFragment == null) {
                     mProfileFragment = new ProfileFragment();
                 }
                 fragment = mProfileFragment;
@@ -106,11 +102,10 @@ public class MainActivity extends AppCompatActivity implements MaterialTabListen
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CAMERA_REQUEST){
-            if (resultCode == RESULT_OK){
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setDataAndType(Uri.fromFile(mPhoto.getFile()), "image/jpeg");
-                startActivity(i);
+        if (requestCode == NEW_PHOTO_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                Photo photo = (Photo) data.getSerializableExtra(NewPhotoActivity.PHOTO_EXTRA);
+                mFeedFragment.addPhoto(photo);
             }
         }
     }
@@ -129,10 +124,7 @@ public class MainActivity extends AppCompatActivity implements MaterialTabListen
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+
 
         return super.onOptionsItemSelected(item);
     }
