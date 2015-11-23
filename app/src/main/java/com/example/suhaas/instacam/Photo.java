@@ -10,6 +10,15 @@ public class Photo implements Serializable{
     private static final File sDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
     private UUID mId;
     private String mCaption;
+    private User mUser;
+
+    public User getUser() {
+        return mUser;
+    }
+
+    public void setUser(User user) {
+        mUser = user;
+    }
 
     Photo(){
         mId = UUID.randomUUID();

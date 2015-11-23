@@ -7,12 +7,17 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.facebook.HttpMethod;
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
+import com.facebook.model.GraphObject;
 import com.facebook.model.GraphUser;
+import com.facebook.widget.LoginButton;
+
+import java.util.List;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -24,6 +29,9 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        LoginButton loginButton = (LoginButton)findViewById(R.id.loginButton);
+        loginButton.setReadPermissions("user_birthday");
 
         mUiLifecycleHelper = new UiLifecycleHelper(this, new Session.StatusCallback() {
             @Override
@@ -37,22 +45,41 @@ public class LoginActivity extends AppCompatActivity {
 
     private void onSessionStateChanged(final Session session, SessionState sessionState, Exception e){
         if (sessionState.isOpened()){
-            Request request = Request.newMeRequest(session, new Request.GraphUserCallback() {
+
+            List<String> permissions = Session.getActiveSession().getPermissions();
+
+            boolean hasBirthdayPermission = false;
+            for (String permission:permissions){
+                if (permission.equals("user_birthday")){
+                    hasBirthdayPermission = true;
+                }
+            }
+
+            if (!hasBirthdayPermission){
+                Session.NewPermissionsRequest permissionRequest = new Session.NewPermissionsRequest(this, "user_birthday");
+                session.requestNewReadPermissions(permissionRequest);
+                return;
+            }
+
+            Bundle parameters = new Bundle();
+            parameters.putString("fields", "picture,first_name,last_name,birthday");
+            Request request = new Request(session, "/me", parameters, HttpMethod.GET, new Request.Callback() {
                 @Override
-                public void onCompleted(GraphUser user, Response response) {
+                public void onCompleted(Response response) {
                     if (session == Session.getActiveSession()){
-                        if (user != null){
-                            Log.d(TAG, user.toString());
+                        if (response.getGraphObject() != null){
+                            GraphObject graphObject = response.getGraphObject();
+                            User.setCurrentUser(graphObject);
                             Intent i = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(i);
                         }
                     }
                     if (response.getError() != null){
-                        //TODO:
+                        Log.d(TAG, "Error is "+response.getError());
                     }
-
                 }
             });
+
             request.executeAsync();
         }else{
 
