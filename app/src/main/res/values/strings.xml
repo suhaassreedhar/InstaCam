@@ -8,4 +8,5 @@
     <string name="new_caption_hint">Please add a caption...</string>
     <string name="save">Save</string>
     <string name="fb_app_id">1613311185598811</string>
+    <string name="title_activity_login">LoginActivity</string>
 </resources>
