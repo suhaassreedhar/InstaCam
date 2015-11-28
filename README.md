@@ -19,5 +19,7 @@ Instacam is an app where you can log in through facebook and you can take selfie
 
 >Used recycler view
 
+>Used material design tabs and icons
+
 A simple snapshot of this app
 
