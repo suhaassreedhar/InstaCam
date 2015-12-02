@@ -1,25 +1,25 @@
 # InstaCam
 Instacam is an app where you can log in through facebook and you can take selfie's.
 
-#How to use
+##Features
 
->Login through your facebook account
+*You can take as many as photos
 
->Use a floating camera button to capture image
+*Can add a simple tag that relates to image and save
 
->Add a tag to the image and save
+*Can switch between your profile and user
 
-#Features
+*Used recycler view
 
->You can take as many as photos
+*Used material design tabs and icons
 
->Can add a simple tag that relates to image and save
+###How to use
 
->Can switch between your profile and user
+1)Login through your facebook account
 
->Used recycler view
+2)Use a floating camera button to capture image
 
->Used material design tabs and icons
+3)Add a tag to the image and save
 
-A simple snapshot of this app
+####A simple snapshot of this app:
 
