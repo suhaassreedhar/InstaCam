@@ -1,6 +1,8 @@
 # InstaCam
 Instacam is an app where you can log in through facebook and you can take selfie's.
 
+<a href="https://play.google.com/store/apps/details?id=com.suhaas.instacam&hl=en&utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-AC-global-none-all-co-pr-py-PartBadges-Oct1515-1"><img width="200" alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge-border.png" /></a>
+
 ## Features
 * You can take as many as photos
 * Can add a simple tag that relates to image and save
