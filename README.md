@@ -1,25 +1,34 @@
 # InstaCam
 Instacam is an app where you can log in through facebook and you can take selfie's.
 
-##Features
+## Features
+* You can take as many as photos
+* Can add a simple tag that relates to image and save
+* Can switch between your profile and user
+* Used recycler view
+* Used material design tabs and icons
 
-*You can take as many as photos
+### How to use
+- Login through your facebook account
+- Use a floating camera button to capture image
+- Add a tag to the image and save
 
-*Can add a simple tag that relates to image and save
+### Screenshots:
 
-*Can switch between your profile and user
+License
+-------
 
-*Used recycler view
+    Copyright 2015 Suhaas Sreedhar.
 
-*Used material design tabs and icons
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
 
-###How to use
+       http://www.apache.org/licenses/LICENSE-2.0
 
-1)Login through your facebook account
-
-2)Use a floating camera button to capture image
-
-3)Add a tag to the image and save
-
-####A simple snapshot of this app:
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
 
